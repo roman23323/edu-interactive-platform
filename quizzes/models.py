@@ -10,6 +10,7 @@ class Quiz(models.Model):
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    title = models.CharField(max_length=100, null=True, blank=True)
     seconds_for_answer = models.IntegerField(default=30)
     life_system = models.BooleanField(default=False)
     tournament = models.BooleanField(default=False)
