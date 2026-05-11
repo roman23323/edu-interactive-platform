@@ -3,7 +3,8 @@
 {% block content %}
 <h1>{{ collection.title }}</h1>
 
-<h2>Add new card</h2>
+{% if collection.author == user %}
+<h2>Добавить новую карточку</h2>
 
 <form
     method="post"
@@ -14,11 +15,12 @@
     {{ card_form.as_p }}
 
     <button type="submit">
-        Add card
+        Добавить карточку
     </button>
 </form>
 
 <hr>
+{% endif %}
 
 <a href="{% url 'cards:study_cards' collection.id %}">
     Start studying

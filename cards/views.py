@@ -52,8 +52,7 @@ def collection_create(request):
 def collection_detail(request, collection_id):
     collection = get_object_or_404(
         CardCollection,
-        id=collection_id,
-        author=request.user,
+        id=collection_id
     )
 
     card_form = CardForm()
@@ -94,8 +93,7 @@ def card_create(request, collection_id):
 def study_cards(request, collection_id):
     collection = get_object_or_404(
         CardCollection,
-        id=collection_id,
-        author=request.user,
+        id=collection_id
     )
 
     cards = list(collection.cards.all())
