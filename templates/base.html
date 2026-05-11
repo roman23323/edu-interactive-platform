@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Platform</title>
+</head>
+<body>
+
+<header style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ccc;">
+    <div>
+        <a href="/">Главная</a>
+    </div>
+
+    <div>
+        {% if user.is_authenticated %}
+            <span>
+                Пользователь: {{ user.username }}
+
+                {% if user.is_guest %}
+                    (гость)
+                {% else %}
+                    (пользователь)
+                {% endif %}
+            </span>
+
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Выйти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+            <a href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+    </div>
+</header>
+
+<main style="padding: 20px;">
+    {% block content %}
+    {% endblock %}
+</main>
+
+</body>
+</html>
