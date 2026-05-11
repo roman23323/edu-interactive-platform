@@ -212,8 +212,24 @@ def generate_quiz(request):
     if request.method == "POST":
         topic = request.POST.get("topic")
 
+        title = request.POST.get("title") or None
+
+        seconds_for_answer = request.POST.get("seconds_for_answer")
+        seconds_for_answer = int(seconds_for_answer) if seconds_for_answer else 30
+
+        life_system = request.POST.get("life_system") == "on"
+        tournament = request.POST.get("tournament") == "on"
+
         data = generate_quiz_from_gigachat(topic)
-        quiz = create_quiz_from_data(request.user, data)
+
+        quiz = create_quiz_from_data(
+            user=request.user,
+            data=data,
+            title=title,
+            seconds_for_answer=seconds_for_answer,
+            life_system=life_system,
+            tournament=tournament,
+        )
 
         return redirect("quiz_detail", quiz_id=quiz.id)
 

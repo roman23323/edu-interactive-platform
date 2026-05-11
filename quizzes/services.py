@@ -82,12 +82,22 @@ class QuizEngineService:
         return session
 
 
-def create_quiz_from_data(user, data: dict) -> Quiz:
+def create_quiz_from_data(
+    user,
+    data: dict,
+    title=None,
+    seconds_for_answer=30,
+    life_system=False,
+    tournament=False,
+):
+
     quiz = Quiz.objects.create(
         author=user,
-        title=data.get("title", "Generated Quiz"),
+        title=title or data.get("title", "Викторина без названия"),
+        seconds_for_answer=seconds_for_answer,
+        life_system=life_system,
+        tournament=tournament,
     )
-
 
     for q in data["questions"]:
         QuizQuestion.objects.create(

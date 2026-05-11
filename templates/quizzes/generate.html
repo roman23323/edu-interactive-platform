@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<h1>Generate quiz</h1>
+<h1>Сгенерируйте викторину в GigaChat</h1>
+<h3>Нейросеть может выдавать ошибку. Попробуйте ещё раз, если генерация завершилась неудачно.</h3>
 
 <form method="post">
     {% csrf_token %}
@@ -10,12 +11,36 @@
     <input
         type="text"
         name="topic"
-        placeholder="Enter topic"
+        placeholder="Описание темы"
         required
     >
 
+    <input
+        type="text"
+        name="title"
+        placeholder="Название викторины (необязательно)"
+    >
+
+    <input
+        type="number"
+        name="seconds_for_answer"
+        placeholder="Время на ответ (сек)"
+        value="30"
+        min="5"
+    >
+
+    <label>
+        <input type="checkbox" name="life_system">
+        Система жизней
+    </label>
+
+    <label>
+        <input type="checkbox" name="tournament">
+        Турнирный режим
+    </label>
+
     <button type="submit">
-        Generate
+        Сгенерировать
     </button>
 </form>
 
