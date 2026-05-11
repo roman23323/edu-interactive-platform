@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Study: {{ collection.title }}</h1>
+
+{% if empty %}
+    <p>Collection is empty</p>
+{% else %}
+
+    <p>
+        Card {{ current_index|add:1 }} / {{ total_cards }}
+    </p>
+
+    <hr>
+
+    <div>
+        <h2>Front side</h2>
+
+        <p>{{ card.first_page }}</p>
+    </div>
+
+    {% if show_back %}
+        <hr>
+
+        <div>
+            <h2>Back side</h2>
+
+            <p>{{ card.second_page }}</p>
+        </div>
+    {% endif %}
+
+    <hr>
+
+    {% if not show_back %}
+        <a
+            href="?card={{ current_index }}&show_back=1"
+        >
+            Show answer
+        </a>
+    {% endif %}
+
+    <br><br>
+
+    {% if has_prev %}
+        <a
+            href="?card={{ current_index|add:-1 }}"
+        >
+            Previous
+        </a>
+    {% endif %}
+
+    {% if has_next %}
+        <a
+            href="?card={{ current_index|add:1 }}"
+        >
+            Next
+        </a>
+    {% endif %}
+
+{% endif %}
+{% endblock %}

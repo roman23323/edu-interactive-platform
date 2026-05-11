@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ collection.title }}</h1>
+
+<h2>Add new card</h2>
+
+<form
+    method="post"
+    action="{% url 'cards:card_create' collection.id %}"
+>
+    {% csrf_token %}
+
+    {{ card_form.as_p }}
+
+    <button type="submit">
+        Add card
+    </button>
+</form>
+
+<hr>
+
+<a href="{% url 'cards:study_cards' collection.id %}">
+    Start studying
+</a>
+
+<hr>
+
+<h2>Cards</h2>
+
+{% for card in collection.cards.all %}
+    <div>
+        <strong>Front:</strong>
+        <p>{{ card.first_page }}</p>
+
+        <strong>Back:</strong>
+        <p>{{ card.second_page }}</p>
+    </div>
+
+    <hr>
+{% empty %}
+    <p>No cards yet</p>
+{% endfor %}
+{% endblock %}
