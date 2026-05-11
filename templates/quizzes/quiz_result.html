@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Результат</h1>
+
+<p>Ваш счёт: {{ score }}</p>
+
+<a href="/">На главную</a>
+<a href="/quiz/{{ quiz_id }}/">На страницу викторины</a>
+{% endblock %}

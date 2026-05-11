@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ question.text }}</h2>
+
+<form method="post" action="/quiz/answer/{{ question.id }}/">
+    {% csrf_token %}
+
+    {% if question.other_options %}
+        {% for option in question.other_options %}
+            <label>
+                <input type="radio" name="answer" value="{{ option }}">
+                {{ option }}
+            </label><br>
+        {% endfor %}
+    {% else %}
+        <input type="text" name="answer">
+    {% endif %}
+
+    <button type="submit">Ответить</button>
+</form>
+{% endblock %}

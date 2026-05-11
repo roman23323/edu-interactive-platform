@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Quiz: {{ quiz.id }}</h1>
+
+<p>
+    Type: {{ quiz.type }} <br>
+    Time per question: {{ quiz.seconds_for_answer }} sec <br>
+    Lives system: {{ quiz.life_system }} <br>
+    Tournament: {{ quiz.tournament }}
+</p>
+
+<hr>
+
+{% if leaderboard %}
+    <h2>Leaderboard</h2>
+
+    <ul>
+        {% for row in leaderboard %}
+            <li>
+                {{ row.user.username }} — {{ row.points }} points
+            </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <a href="{% url 'quiz_start' quiz.id %}">
+        Start quiz
+    </a>
+{% else %}
+    <h2>Enter your name</h2>
+
+    <form method="post" action="{% url 'quiz_guest' quiz.id %}">
+        {% csrf_token %}
+
+        <input type="text" name="name" required>
+
+        <button type="submit">
+            Start quiz
+        </button>
+    </form>
+{% endif %}
+{% endblock %}
