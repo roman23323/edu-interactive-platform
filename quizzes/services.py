@@ -80,3 +80,21 @@ class QuizEngineService:
 
         session.finished = True
         return session
+
+
+def create_quiz_from_data(user, data: dict) -> Quiz:
+    quiz = Quiz.objects.create(
+        author=user,
+        title=data.get("title", "Generated Quiz"),
+    )
+
+
+    for q in data["questions"]:
+        QuizQuestion.objects.create(
+            quiz=quiz,
+            text=q["text"],
+            right_answer=q["right_answer"],
+            other_options=q["other_options"],
+        )
+
+    return quiz
