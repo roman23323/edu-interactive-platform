@@ -32,7 +32,7 @@
         {% for quiz in recent_quizzes %}
             <li>
                 <a href="{% url 'quiz_detail' quiz.id %}">
-                    Викторина #{{ quiz.id }}
+                    {{ quiz.title }}
                 </a>
             </li>
         {% endfor %}
