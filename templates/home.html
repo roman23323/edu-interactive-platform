@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Образовательная платформа с интерактивными заданиями</h1>
+
+<p>
+    Платформа с викторинами и карточками
+</p>
+
+<hr>
+
+<h2>Пройти викторину</h2>
+
+<form method="get" action="/quiz/0/" id="quiz-form">
+    <input
+        type="number"
+        id="quiz-id"
+        placeholder="ID викторины"
+        required
+    >
+
+    <button type="submit">
+        Открыть викторину
+    </button>
+</form>
+
+<h2>Новые викторины:</h2>
+
+{% if recent_quizzes %}
+    <ul>
+        {% for quiz in recent_quizzes %}
+            <li>
+                <a href="{% url 'quiz_detail' quiz.id %}">
+                    Викторина #{{ quiz.id }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Пока нет викторин</p>
+{% endif %}
+
+<hr>
+
+{% if user.is_authenticated and not user.is_guest %}
+
+    <h2>Карточки</h2>
+
+    <form method="get" action="/cards/0/" id="cards-form">
+        <input
+            type="number"
+            id="collection-id"
+            placeholder="ID коллекции карточек"
+            required
+        >
+
+        <button type="submit">
+            Открыть коллекцию
+        </button>
+    </form>
+
+    <h2>Новые коллекции карточек:</h2>
+
+    {% if recent_collections %}
+        <ul>
+            {% for collection in recent_collections %}
+                <li>
+                    <a href="{% url 'cards:collection_detail' collection.id %}">
+                        {{ collection.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Пока нет коллекций</p>
+    {% endif %}
+
+    <br>
+
+    <a href="{% url 'cards:collection_list' %}">
+        Мои коллекции
+    </a>
+
+    <br><br>
+
+    <a href="{% url 'cards:collection_create' %}">
+        Создать коллекцию
+    </a>
+
+    <hr>
+
+    <h2>Создание викторины</h2>
+
+    <a href="{% url 'quiz_create' %}">
+        Создать викторину
+    </a>
+
+{% else %}
+
+    <h2>Для пользования карточками нужно авторизоваться</h2>
+
+    <p>
+        Зарегистрируйтесь или войдите в аккаунт, чтобы получить доступ к карточкам
+    </p>
+
+{% endif %}
+
+<script>
+    const quizForm = document.getElementById('quiz-form');
+
+    quizForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const quizId =
+            document.getElementById('quiz-id').value;
+
+        window.location.href = `/quiz/${quizId}/`;
+    });
+
+    const cardsForm =
+        document.getElementById('cards-form');
+
+    if (cardsForm) {
+        cardsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const collectionId =
+                document.getElementById('collection-id').value;
+
+            window.location.href =
+                `/cards/${collectionId}/`;
+        });
+    }
+</script>
+
+{% endblock %}
