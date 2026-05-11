@@ -14,6 +14,7 @@ from .forms import GuestUserForm, QuizCreateForm, QuizQuestionForm
 from config.decorators import non_guest_required
 from config.giga_chat_generator import generate_quiz_from_gigachat
 from .services import create_quiz_from_data
+from django.utils.decorators import method_decorator
 
 
 User = get_user_model()
@@ -130,7 +131,7 @@ class CreateGuestUserView(View):
 
 class QuizCreateView(LoginRequiredMixin, View):
 
-    @non_guest_required
+    @method_decorator(non_guest_required)
     def get(self, request):
         form = QuizCreateForm()
 
@@ -138,7 +139,7 @@ class QuizCreateView(LoginRequiredMixin, View):
             'form': form
         })
 
-    @non_guest_required
+    @method_decorator(non_guest_required)
     def post(self, request):
         form = QuizCreateForm(request.POST)
 
@@ -156,7 +157,7 @@ class QuizCreateView(LoginRequiredMixin, View):
 
 class QuizAddQuestionsView(LoginRequiredMixin, View):
 
-    @non_guest_required
+    @method_decorator(non_guest_required)
     def get(self, request, quiz_id):
         form = QuizQuestionForm()
 
@@ -170,7 +171,7 @@ class QuizAddQuestionsView(LoginRequiredMixin, View):
             'questions': questions
         })
 
-    @non_guest_required
+    @method_decorator(non_guest_required)
     def post(self, request, quiz_id):
         form = QuizQuestionForm(request.POST)
 
