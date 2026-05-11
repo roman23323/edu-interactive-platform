@@ -24,6 +24,7 @@ def generate_quiz_from_gigachat(topic: str) -> dict:
     - Никаких дополнительных текстов - только JSON в ответе
     - Никаких дополнительных знаков, в том числе никакой markdown-разметки
     - Для каждого вопроса: 4 варината ответа, один из правильных
+    - Не забывай закрывать фигурную скобку, чтобы избежать ошибок JSON
 
     Формат выходного JSON:
     {{
@@ -40,7 +41,8 @@ def generate_quiz_from_gigachat(topic: str) -> dict:
     response = giga.chat(prompt)
 
     content = response.choices[0].message.content
-    if content.startswith('json'):
+
+    if content.startswith('```json'):
         content = content[7:-3]
 
     return json.loads(content)
