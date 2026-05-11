@@ -4,43 +4,43 @@
 <h1>{{ collection.title }}</h1>
 
 {% if collection.author == user %}
-<h2>Добавить новую карточку</h2>
+    <h2>Добавить новую карточку</h2>
 
-<form
-    method="post"
-    action="{% url 'cards:card_create' collection.id %}"
->
-    {% csrf_token %}
+    <form
+        method="post"
+        action="{% url 'cards:card_create' collection.id %}"
+    >
+        {% csrf_token %}
 
-    {{ card_form.as_p }}
+        {{ card_form.as_p }}
 
-    <button type="submit">
-        Добавить карточку
-    </button>
-</form>
+        <button type="submit">
+            Добавить карточку
+        </button>
+    </form>
 
-<hr>
+    <hr>
 {% endif %}
 
 <a href="{% url 'cards:study_cards' collection.id %}">
-    Start studying
+    Учить карточки
 </a>
 
 <hr>
 
-<h2>Cards</h2>
+<h2>Карточки</h2>
 
 {% for card in collection.cards.all %}
     <div>
-        <strong>Front:</strong>
+        <strong>Лицевая сторона:</strong>
         <p>{{ card.first_page }}</p>
 
-        <strong>Back:</strong>
+        <strong>Оборотная сторона:</strong>
         <p>{{ card.second_page }}</p>
     </div>
 
     <hr>
 {% empty %}
-    <p>No cards yet</p>
+    <p>Пока нет карточек</p>
 {% endfor %}
 {% endblock %}

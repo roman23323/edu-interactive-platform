@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Study: {{ collection.title }}</h1>
+<h1>Учить карточки: {{ collection.title }}</h1>
 
 {% if empty %}
-    <p>Collection is empty</p>
+    <p>Коллекция пуста</p>
 {% else %}
 
     <p>
-        Card {{ current_index|add:1 }} / {{ total_cards }}
+        Карточка {{ current_index|add:1 }} / {{ total_cards }}
     </p>
 
     <hr>
 
     <div>
-        <h2>Front side</h2>
+        <h2>Лицевая сторона</h2>
 
         <p>{{ card.first_page }}</p>
     </div>
@@ -23,7 +23,7 @@
         <hr>
 
         <div>
-            <h2>Back side</h2>
+            <h2>Оборотная сторона</h2>
 
             <p>{{ card.second_page }}</p>
         </div>
@@ -35,7 +35,7 @@
         <a
             href="?card={{ current_index }}&show_back=1"
         >
-            Show answer
+            Показать оборотную сторону
         </a>
     {% endif %}
 
@@ -45,7 +45,7 @@
         <a
             href="?card={{ current_index|add:-1 }}"
         >
-            Previous
+            Предыдущая карточка
         </a>
     {% endif %}
 
@@ -53,9 +53,13 @@
         <a
             href="?card={{ current_index|add:1 }}"
         >
-            Next
+            Следующая карточка
         </a>
     {% endif %}
+
+<hr>
+
+<a href="/cards/{{ collection.id }}">Назад</a>
 
 {% endif %}
 {% endblock %}

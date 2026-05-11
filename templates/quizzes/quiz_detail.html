@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Quiz: {{ quiz.id }}</h1>
+<h1>Викторина: {{ quiz.id }}</h1>
 
 <p>
-    Type: {{ quiz.type }} <br>
-    Time per question: {{ quiz.seconds_for_answer }} sec <br>
-    Lives system: {{ quiz.life_system }} <br>
-    Tournament: {{ quiz.tournament }}
+    Тип: {{ quiz.type }} <br>
+    Время для ответа на каждый вопрос: {{ quiz.seconds_for_answer }} sec <br>
+    Система жизней: {{ quiz.life_system }} <br>
+    Режим соревнования: {{ quiz.tournament }}
 </p>
 
 <hr>
 
 {% if leaderboard %}
-    <h2>Leaderboard</h2>
+    <h2>Турнирная таблица</h2>
 
     <ul>
         {% for row in leaderboard %}
             <li>
-                {{ row.user.username }} — {{ row.points }} points
+                {{ row.user.username }} — {{ row.points }} баллов
             </li>
         {% endfor %}
     </ul>
@@ -28,10 +28,10 @@
 
 {% if user.is_authenticated %}
     <a href="{% url 'quiz_start' quiz.id %}">
-        Start quiz
+        Начать викторину
     </a>
 {% else %}
-    <h2>Enter your name</h2>
+    <h2>Введите ваше имя, чтобы начать как гость или войдите в аккаунт или зарегистрируйтесь</h2>
 
     <form method="post" action="{% url 'quiz_guest' quiz.id %}">
         {% csrf_token %}
@@ -39,7 +39,7 @@
         <input type="text" name="name" required>
 
         <button type="submit">
-            Start quiz
+            Начать викторину
         </button>
     </form>
 {% endif %}

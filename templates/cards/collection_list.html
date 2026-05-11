@@ -4,7 +4,7 @@
 <h1>My collections</h1>
 
 <a href="{% url 'cards:collection_create' %}">
-    Create collection
+    Создать коллекцию
 </a>
 
 <hr>
@@ -18,12 +18,12 @@
         </h3>
 
         <p>
-            Cards: {{ collection.cards.count }}
+            Карточек: {{ collection.cards.count }}
         </p>
     </div>
 
     <hr>
 {% empty %}
-    <p>No collections yet</p>
+    <p>Пока нет коллекций</p>
 {% endfor %}
 {% endblock %}
