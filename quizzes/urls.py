@@ -7,7 +7,8 @@ from .views import (
     QuizResultView,
     CreateGuestUserView,
     QuizAddQuestionsView,
-    QuizCreateView
+    QuizCreateView,
+    generate_quiz
 )
 
 urlpatterns = [
@@ -30,5 +31,10 @@ urlpatterns = [
         'quiz/<int:quiz_id>/questions/',
         QuizAddQuestionsView.as_view(),
         name='quiz_add_questions'
+    ),
+    path(
+        "quiz/generate/",
+        generate_quiz,
+        name="quiz_generate",
     ),
 ]
