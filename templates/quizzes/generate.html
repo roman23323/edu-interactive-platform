@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Generate quiz</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <input
+        type="text"
+        name="topic"
+        placeholder="Enter topic"
+        required
+    >
+
+    <button type="submit">
+        Generate
+    </button>
+</form>
+
+{% endblock %}

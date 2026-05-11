@@ -11,6 +11,9 @@ from .models import Quiz, QuizQuestion, TournamentTable
 from .services import QuizEngineService
 from .quiz_session import QuizSession
 from .forms import GuestUserForm, QuizCreateForm, QuizQuestionForm
+from config.decorators import non_guest_required
+from config.giga_chat_generator import generate_quiz_from_gigachat
+from .services import create_quiz_from_data
 
 
 User = get_user_model()
@@ -127,6 +130,7 @@ class CreateGuestUserView(View):
 
 class QuizCreateView(LoginRequiredMixin, View):
 
+    @non_guest_required
     def get(self, request):
         form = QuizCreateForm()
 
@@ -134,6 +138,7 @@ class QuizCreateView(LoginRequiredMixin, View):
             'form': form
         })
 
+    @non_guest_required
     def post(self, request):
         form = QuizCreateForm(request.POST)
 
@@ -151,6 +156,7 @@ class QuizCreateView(LoginRequiredMixin, View):
 
 class QuizAddQuestionsView(LoginRequiredMixin, View):
 
+    @non_guest_required
     def get(self, request, quiz_id):
         form = QuizQuestionForm()
 
@@ -164,6 +170,7 @@ class QuizAddQuestionsView(LoginRequiredMixin, View):
             'questions': questions
         })
 
+    @non_guest_required
     def post(self, request, quiz_id):
         form = QuizQuestionForm(request.POST)
 
@@ -197,3 +204,16 @@ class QuizAddQuestionsView(LoginRequiredMixin, View):
         question.save()
 
         return redirect('quiz_add_questions', quiz.id)
+
+
+@non_guest_required
+def generate_quiz(request):
+    if request.method == "POST":
+        topic = request.POST.get("topic")
+
+        data = generate_quiz_from_gigachat(topic)
+        quiz = create_quiz_from_data(request.user, data)
+
+        return redirect("quiz_detail", quiz_id=quiz.id)
+
+    return render(request, "quizzes/generate.html")
