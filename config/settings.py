@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-2g!6wt7=tfmyp1_-jsrshkhu_)^q6oe%%1h1b@1dck!v(f*com
 GIGACHAT_API_KEY = env('GIGACHAT_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG', default='False') == 'True'
 
 ALLOWED_HOSTS = []
 
