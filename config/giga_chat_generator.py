@@ -38,9 +38,10 @@ def generate_quiz_from_gigachat(topic: str) -> dict:
       ]
     }}
     """
-
     response = giga.chat(prompt)
 
-    content = response.choices[0].message.content[7:-3]
+    content = response.choices[0].message.content
+    if content.startswith('json'):
+        content = content[7:-3]
 
     return json.loads(content)
