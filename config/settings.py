@@ -33,7 +33,7 @@ GIGACHAT_API_KEY = env('GIGACHAT_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default='False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", default="").split(",")
 
 
 # Application definition
