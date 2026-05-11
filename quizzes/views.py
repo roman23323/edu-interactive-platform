@@ -4,12 +4,13 @@ from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 import uuid
 
 from .models import Quiz, QuizQuestion, TournamentTable
 from .services import QuizEngineService
 from .quiz_session import QuizSession
-from .forms import GuestUserForm
+from .forms import GuestUserForm, QuizCreateForm, QuizQuestionForm
 
 
 User = get_user_model()
@@ -122,3 +123,77 @@ class CreateGuestUserView(View):
         login(request, user)
 
         return redirect('quiz_start', quiz_id=quiz_id)
+
+
+class QuizCreateView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        form = QuizCreateForm()
+
+        return render(request, 'quizzes/create_quiz.html', {
+            'form': form
+        })
+
+    def post(self, request):
+        form = QuizCreateForm(request.POST)
+
+        if not form.is_valid():
+            return render(request, 'quizzes/create_quiz.html', {
+                'form': form
+            })
+
+        quiz = form.save(commit=False)
+        quiz.author = request.user
+        quiz.save()
+
+        return redirect('quiz_add_questions', quiz.id)
+
+
+class QuizAddQuestionsView(LoginRequiredMixin, View):
+
+    def get(self, request, quiz_id):
+        form = QuizQuestionForm()
+
+        quiz = Quiz.objects.get(id=quiz_id)
+
+        questions = quiz.questions.all()
+
+        return render(request, 'quizzes/add_questions.html', {
+            'form': form,
+            'quiz': quiz,
+            'questions': questions
+        })
+
+    def post(self, request, quiz_id):
+        form = QuizQuestionForm(request.POST)
+
+        quiz = Quiz.objects.get(id=quiz_id)
+
+        if not form.is_valid():
+            questions = quiz.questions.all()
+
+            return render(request, 'quizzes/add_questions.html', {
+                'form': form,
+                'quiz': quiz,
+                'questions': questions
+            })
+
+        question = form.save(commit=False)
+        question.quiz = quiz
+
+        raw_options = request.POST.get('other_options', '')
+
+        options = [
+            option.strip()
+            for option in raw_options.split(',')
+            if option.strip()
+        ]
+
+        if question.right_answer not in options:
+            options.append(question.right_answer)
+
+        question.other_options = options
+
+        question.save()
+
+        return redirect('quiz_add_questions', quiz.id)

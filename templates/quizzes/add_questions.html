@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Добавить вопрос</h1>
+
+<h2>Викторина {{ quiz.id }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        Текст вопроса:
+        {{ form.text }}
+    </p>
+
+    <p>
+        Другие варианты ответа (неверные):
+        <input type="text" name="other_options">
+    </p>
+
+    <p>
+        Правльный ответ:
+        {{ form.right_answer }}
+    </p>
+
+    <p>
+        Баллы за вопрос:
+        {{ form.points }}
+    </p>
+
+    <button type="submit">
+        Добавить вопрос
+    </button>
+</form>
+
+<hr>
+
+<h2>Вопросы викторины:</h2>
+
+<ul>
+    {% for question in questions %}
+        <li>
+            {{ question.text }}
+        </li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<a href="{% url 'quiz_detail' quiz.id %}">
+    Завершить создание викторины
+</a>
+{% endblock %}
