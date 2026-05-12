@@ -17,7 +17,8 @@ class QuizCreateForm(forms.ModelForm):
             'type',
             'seconds_for_answer',
             'life_system',
-            'tournament'
+            'tournament',
+            'title'
         ]
 
 
